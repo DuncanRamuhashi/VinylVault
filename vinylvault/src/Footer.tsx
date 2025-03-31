@@ -4,52 +4,16 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="flex gap-8 justify-between">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">YourCompany</h3>
+            <h3 className="text-lg font-semibold">Vinyl Vault</h3>
             <p className="text-gray-400 text-sm">
-              Making the world a better place through innovative solutions.
+              Making the world a better place through by giving you a Library to store your collection.
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="/" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="/about" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="/services" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Services
-                </a>
-              </li>
-              <li>
-                <a href="/contact" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
 
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-            <ul className="space-y-2 text-gray-400 text-sm">
-              <li>Email: info@yourcompany.com</li>
-              <li>Phone: (555) 123-4567</li>
-              <li>123 Business Street</li>
-              <li>City, State 12345</li>
-            </ul>
-          </div>
 
           {/* Social Media */}
           <div>
