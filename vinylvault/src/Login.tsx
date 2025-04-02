@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import background from './assets/w.jpg';
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const  navigate = useNavigate();
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // Add your login logic here
+    navigate('/collections');
     console.log('Login attempted with:', { email, password });
   };
 

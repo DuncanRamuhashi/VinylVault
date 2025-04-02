@@ -8,7 +8,7 @@ const Register = () => {
   const  navigate = useNavigate();
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    navigate('/home')
+    navigate('/collections');
     // Add your registration logic here
     console.log('Registration attempted with:', { name, email, password });
 

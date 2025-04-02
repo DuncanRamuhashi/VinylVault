@@ -18,6 +18,9 @@ const Home = () => {
         <p className="text-base mb-6 max-w-2xl">
           Timeless Music, Forever Preserved.
         </p>
+        <p className="text-base mb-6 max-w-2xl">
+          Helping you Remember your Collections.
+        </p>
       </div>
 
       <Mic/>

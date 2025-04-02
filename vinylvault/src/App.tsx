@@ -5,9 +5,10 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import Login from './Login';
 import Register from './Register';
+import MainPage from './MainPage';
 
 function App() {
-  const [count, setCount] = useState(0);
+
 
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
         <Route path="*" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/collections" element={<MainPage />}/>
       </Routes>
       <Footer/>
     </Router>
