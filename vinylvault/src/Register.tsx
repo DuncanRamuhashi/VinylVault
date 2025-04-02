@@ -9,6 +9,8 @@ const Register = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     navigate('/collections');
+    localStorage.setItem("user","user");
+    location.reload();
     // Add your registration logic here
     console.log('Registration attempted with:', { name, email, password });
 

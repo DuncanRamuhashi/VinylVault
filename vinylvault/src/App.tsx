@@ -6,6 +6,7 @@ import Footer from './Footer';
 import Login from './Login';
 import Register from './Register';
 import MainPage from './MainPage';
+import Profile from './Profile';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/collections" element={<MainPage />}/>
+        <Route path="/profile" element={<Profile />}/>
       </Routes>
       <Footer/>
     </Router>

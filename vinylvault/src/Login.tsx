@@ -5,9 +5,13 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const  navigate = useNavigate();
+  
   const handleSubmit = (e: any) => {
     e.preventDefault();
     navigate('/collections');
+
+        localStorage.setItem("user","user");
+        location.reload();
     console.log('Login attempted with:', { email, password });
   };
 
