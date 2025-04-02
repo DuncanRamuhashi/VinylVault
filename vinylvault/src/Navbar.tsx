@@ -29,6 +29,13 @@ const Navbar = () => {
             >
               Register
             </a>
+            
+            <a 
+              href="/register"
+              className=" bg-red-800 text-gray-100 hover:bg-red-900 px-3 py-2 rounded-md text-sm font-medium transition-colors "
+            >
+              LogOut
+            </a>
           </div>
         </div>
       </div>

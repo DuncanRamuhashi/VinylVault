@@ -48,7 +48,7 @@ const MainPage = () => {
                 previousLabel={"← Previous"}
                 nextLabel={"Next →"}
                 breakLabel={"..."}
-                pageCount={10} // Set a fixed number of pages or get it dynamically from API response headers
+                pageCount={10} 
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={3}
                 onPageChange={handlePageClick}
