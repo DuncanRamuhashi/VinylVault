@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import logo from './assets/yy-removebg-preview.png';
 import { FaRegUser,FaUpload,FaHome } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [userIn, setUserIn] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Check if user is logged in (Example: Using localStorage)
     const loggedIn = localStorage.getItem("user");
@@ -14,6 +15,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user"); // Remove user from storage
     setUserIn(false); // Update state
+    navigate('/');
   };
 
   return (

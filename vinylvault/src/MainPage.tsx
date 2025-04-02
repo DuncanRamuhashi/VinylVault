@@ -45,8 +45,8 @@ const MainPage = () => {
 
       {/* Pagination*/}
         <ReactPaginate
-                previousLabel={"← Previous"}
-                nextLabel={"Next →"}
+                previousLabel={"← "}
+                nextLabel={" →"}
                 breakLabel={"..."}
                 pageCount={10} 
                 marginPagesDisplayed={2}
