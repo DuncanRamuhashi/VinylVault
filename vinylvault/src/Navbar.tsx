@@ -45,12 +45,8 @@ const Navbar = () => {
                 >
                   <FaUpload className='w-13 h-4' />
                 </a>
-                <a 
-                  href="/profile"
-                  className="bg-red-800 text-gray-100 hover:bg-red-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  <FaRegUser className='w-13 h-4' />
-                </a>
+                
+      
                 <button 
                   onClick={handleLogout}
                   className="bg-red-800  text-gray-100 hover:bg-red-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
