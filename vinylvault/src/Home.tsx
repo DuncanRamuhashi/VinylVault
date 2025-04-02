@@ -22,7 +22,6 @@ const Home = () => {
           Helping you Remember your Collections.
         </p>
       </div>
-
       <Mic/>
     </div>
   );

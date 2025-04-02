@@ -1,5 +1,5 @@
 import React from "react";
-import vinylSrc from '../assets/pexels-didsss-2032719.jpg';
+import vinylSrc from '../assets/vuma.png';
 
 interface AlbumCoverProps {
   albumSrc: string;
@@ -12,13 +12,13 @@ const AlbumCover: React.FC<AlbumCoverProps> = ({ albumSrc }) => {
       <img
         src={vinylSrc}
         alt="Vinyl Record"
-        className="absolute w-full h-full object-cover -left-4 top-2 transition-transform duration-700 ease-in-out group-hover:rotate-[20deg] group-hover:-translate-x-4 group-hover:scale-105"
+        className="absolute w-full h-full object-contain left-16 top-2 "
       />
       {/* Album Cover */}
       <img
         src={albumSrc}
         alt="Album Cover"
-        className="relative w-full h-full object-cover shadow-lg rounded-lg z-10"
+        className="relative w-[260px] h-full object-cover shadow-lg  z-10 -left-4"
       />
     </div>
   );
