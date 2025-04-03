@@ -17,12 +17,12 @@ const MainPage = () => {
   return (
     <div className="flex flex-col items-center  min-h-screen px-6 py-16">
       {/* Title Section */}
-      <h1 className="text-3xl font-extrabold tracking-tight mb-10 text-center bg-clip-text text-gray-800">
+      <h1 className="md:text-3xl font-extrabold tracking-tight mb-10 text-center bg-clip-text text-gray-800">
         Your Favorite Collection 
       </h1>
          
       {/* Albums Grid */}
-      <div className="flex  flex-wrap gap-[60px] max-w-6xl">
+      <div className="flex items-center justify-center flex-wrap gap-[60px] max-w-6xl">
         {albums.map((album) => (
           <div
             key={album.id}
@@ -39,7 +39,7 @@ const MainPage = () => {
       </div>
 
       {/* Call-to-Action */}
-      <p className="mt-16 text-xl font-medium text-gray-600 tracking-wide animate-pulse subtle-pulse">
+      <p className="mt-16 md:text-xl font-medium text-gray-600 tracking-wide animate-pulse subtle-pulse">
         Store your best albums of all time! 
       </p>
 
@@ -50,7 +50,7 @@ const MainPage = () => {
                 breakLabel={"..."}
                 pageCount={10} 
                 marginPagesDisplayed={2}
-                pageRangeDisplayed={3}
+                pageRangeDisplayed={2}
                 onPageChange={handlePageClick}
                 containerClassName={"flex justify-center space-x-2 mt-4"}
                 pageClassName={"px-3 py-1 border rounded bg-gray-200"}
@@ -60,6 +60,6 @@ const MainPage = () => {
         />
     </div>
   );
-};
+};                                                                       
 
 export default MainPage;
