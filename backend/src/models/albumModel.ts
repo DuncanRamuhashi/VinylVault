@@ -1,42 +1,46 @@
-import mongoose from "mongoose";
-import bcrypt from 'bcrypt';
-import { request } from "http";
+import mongoose, { Document, Schema, Model } from "mongoose";
+import { IUser } from "./userModel"; // Import IUser interface
+// Interface for Album
+export interface IAlbum extends Document {
+   _id: string;
+  albumName: string;
+  artistName: string;
+  image: string;
+  user: mongoose.Types.ObjectId | IUser; // Reference User
+  createdAt: string;
+  updatedAt: string;
+}
 
-const albumSchema = new mongoose.Schema(
-
-    {
-        AlbumName:{
-            type: String,
-            required: true,
-
-        },
-        ArtistName:{
-            type: String,
-            required: true,
-
-        },
-        image: { type: String, required: true },
-
-    },{timestamps: true}
+// Define Album Schema
+const albumSchema = new Schema<IAlbum>(
+  {
+    albumName: { type: String, required: true },
+    artistName: { type: String, required: true },
+    image: { type: String, required: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true }, // Reference User
+  },
+  { timestamps: true }
 );
 
 // Middleware to format names before saving
-albumSchema.pre("save", function (next) {
-    if (this.isModified("AlbumName")) {
-      this.AlbumName = this.AlbumName
-        .split(" ")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(" ");
-    }
-  
-    if (this.isModified("ArtistName")) {
-      this.ArtistName = this.ArtistName
-        .split(" ")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(" ");
-    }
-  
-    next();
-  });
+albumSchema.pre<IAlbum>("save", function (next) {
+  if (this.isModified("albumName")) {
+    this.albumName = this.albumName
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
 
-  export default mongoose.model("Album", albumSchema);
+  if (this.isModified("artistName")) {
+    this.artistName = this.artistName
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  }
+
+  next();
+});
+
+// Export Album Model
+
+export default  mongoose.model<IAlbum>("Album", albumSchema);

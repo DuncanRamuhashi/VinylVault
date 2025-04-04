@@ -6,4 +6,6 @@ export const STATUS_CODES = {
     FORBIDDEN: 403,
     NOT_FOUND: 404,
     SERVER_ERROR: 500,
+    CONFLICT :209,
+    TOO_MANY_REQUESTS : 429
 };
