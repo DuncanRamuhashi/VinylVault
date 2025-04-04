@@ -2,22 +2,8 @@ import HttpError from "../utils/httpError";
 import { STATUS_CODES } from "../constants/httpCodes";
 import Album, { IAlbum } from "../models/albumModel";
 import { CreateAlbumDTO } from "../dto/albumDto";
+import { PaginationParams,PaginatedAlbumResponse } from "../dto/paginaionDTO";
 
-// Interface for pagination parameters
-interface PaginationParams {
-  page: number;
-  limit: number;
-}
-
-// Interface for paginated response
-interface PaginatedAlbumResponse {
-  albums: IAlbum[];
-  total: number;
-  page: number;
-  totalPages: number;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
-}
 
 /**
  * Creates a new album.
