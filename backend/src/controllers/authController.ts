@@ -27,7 +27,9 @@ export const loginHandler = expressAsyncHandler(async (req, res, next) => {
     });
   });
 export const logoutHandler = expressAsyncHandler(async (req, res, next) => {
+  console.log(res);
     clearAuthCookies(res);
+
     res.status(STATUS_CODES.OK).json({
       status: "Logout Handler",
     });
