@@ -2,11 +2,14 @@ import jwt from "jsonwebtoken";
 import { Env_Consts } from "../constants/envConsts";
 import { ObjectId } from "mongodb";
 import { extractUserId } from "./extractUserId";
+import userModel from "../models/userModel";
+
 /**
  * Interface representing the user object structure.
  */
 interface User {
   _id: string | ObjectId; // Ensure this matches what IUser provides
+  jwt_secret: string
 }
 
 /**
@@ -32,7 +35,7 @@ const generateAccessToken = (user: User): string => {
     audience: "API V1",
   };
 
-  const secretKey = Env_Consts.JWT_SECRET;
+  const secretKey = user.jwt_secret;
 
   if (!secretKey) {
     throw new Error("JWT secret key is not configured in environment variables");
