@@ -7,5 +7,5 @@ import { Response } from "express";
 export const clearAuthCookies = (res: Response): void => {
   res.clearCookie("accessToken"); // Clear the access token cookie (adjust name if needed)
   res.clearCookie("refreshToken"); // Clear the refresh token cookie (if used)
-  
+
 };

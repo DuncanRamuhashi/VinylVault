@@ -46,7 +46,7 @@ const protect = asyncHandler(async (req: AuthenticatedRequest, res: Response, ne
     if (error instanceof jwt.JsonWebTokenError) {
       throw new HttpError("Not authorized, invalid token", STATUS_CODES.UNAUTHORIZED);
     }
-    throw error; // Re-throw other unexpected errors
+    throw error; 
   }
 });
 
