@@ -9,7 +9,7 @@ export const createAlbumHandler = expressAsyncHandler(async (req , res , next)=>
 res.status(STATUS_CODES.CREATED).json({success: true, message: "Album created successfully", album});
 });
 
-export const getUserAlbumsHandler = expressAsyncHandler(async(req , res, next )=>{
+export const getAlbumsHandler = expressAsyncHandler(async(req , res, next )=>{
        const{ user} = req.params;
        const  pagination: PaginationParams = {
         page: parseInt(req.query.page as string, 10) || 1,
