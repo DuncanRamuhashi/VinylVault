@@ -24,7 +24,7 @@ const generateAccessToken = (user: User): string => {
   }
 
   // Convert _id to string if it’s an ObjectId or other type
-  userId = typeof user._id === "string" ? user._id : user._id.toString();
+  userId = _id;
 
   const jwtOptions: jwt.SignOptions = {
     expiresIn: "15m", // Short-lived access token
