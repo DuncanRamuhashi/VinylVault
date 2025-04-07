@@ -1,13 +1,13 @@
 import expressAsyncHandler from "express-async-handler";
 import { registerUser, loginUser } from "../services/authService";
 import generateToken from "../utils/generateToken";
-import { IUser } from "../models/userModel";
+import userModel, { IUser } from "../models/userModel";
 import { STATUS_CODES } from "../constants/httpCodes";
 import { clearAuthCookies } from "../utils/authCookies";
 
 export const registerHandler = expressAsyncHandler(async (req, res, next) => {
   const user: IUser = await registerUser(req.body);
-
+ 
   await generateToken(user, res);
 
   res.status(STATUS_CODES.CREATED).json({

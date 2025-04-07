@@ -3,9 +3,8 @@ import { Env_Consts } from "../constants/envConsts";
 import { after30Days } from "../constants/dateConsts";
 import generateAccessToken from "./generateAccessToken";
 import generateRefreshToken from "./generateRefreshToken";
-import { IUser } from "../models/userModel"; // Import IUser
+import { IUser } from "../models/userModel";
 
-// Define cookie options interface
 interface CookieOptions {
   httpOnly: boolean;
   sameSite: "strict" | "lax" | "none";
@@ -13,8 +12,6 @@ interface CookieOptions {
   expires: Date;
   path: string;
 }
-
-// Remove the custom User interface and use IUser directly
 
 const setAuthCookies = (res: Response, accessToken: string, refreshToken: string): void => {
   if (res.headersSent) {
@@ -42,7 +39,7 @@ const refreshCookieOptions = (): CookieOptions => ({
 });
 
 const generateToken = async (
-  user: IUser, // Use IUser instead of custom User
+  user: IUser,
   res: Response
 ): Promise<{ accessToken: string; refreshToken: string }> => {
   try {
@@ -54,7 +51,7 @@ const generateToken = async (
     const refreshToken = await generateRefreshToken(user);
 
     user.refreshToken = refreshToken;
-    await user.save(); // IUser's save() returns Promise<IUser>, which is fine
+    await user.save();
 
     setAuthCookies(res, accessToken, refreshToken);
 

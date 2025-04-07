@@ -26,7 +26,7 @@ export const registerUser = async (userData: RegisterUserDTO): Promise<IUser> =>
     password,
     jwt_secret,
   });
-   
+
   return user;
 };
 

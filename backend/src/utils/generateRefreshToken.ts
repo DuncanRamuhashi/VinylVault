@@ -1,5 +1,6 @@
 import crypto from "crypto";
-
+import { extractUserId } from "./extractUserId";
+import { ObjectId } from "mongodb";
 /**
  * Interface representing the user object structure
  */
@@ -15,7 +16,9 @@ interface User {
  */
 const generateRefreshToken = async (user: User): Promise<string> => {
   // Input validation
-  if (!user?._id || typeof user._id !== "string") {
+  const _id= extractUserId(user);
+  console.log("this is the id",_id);  
+  if (!_id || typeof _id !== "string") {
     throw new Error("Invalid user ID provided");
   }
 

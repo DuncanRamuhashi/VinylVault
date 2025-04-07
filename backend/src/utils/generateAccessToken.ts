@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
 import { Env_Consts } from "../constants/envConsts";
-
+import { ObjectId } from "mongodb";
+import { extractUserId } from "./extractUserId";
 /**
  * Interface representing the user object structure.
  */
 interface User {
-  _id: string;
+  _id: string | ObjectId; // Ensure this matches what IUser provides
 }
 
 /**
@@ -16,9 +17,14 @@ interface User {
  */
 const generateAccessToken = (user: User): string => {
   // Input validation
-  if (!user?._id || typeof user._id !== "string") {
-    throw new Error("Invalid user ID provided");
+  let userId: string;
+  const _id= extractUserId(user);
+  if (!_id) {
+    throw new Error("No user ID provided");
   }
+
+  // Convert _id to string if it’s an ObjectId or other type
+  userId = typeof user._id === "string" ? user._id : user._id.toString();
 
   const jwtOptions: jwt.SignOptions = {
     expiresIn: "15m", // Short-lived access token
@@ -26,7 +32,6 @@ const generateAccessToken = (user: User): string => {
     audience: "API V1",
   };
 
-  // Only use environment variable for security (removed user.jwt_secret fallback)
   const secretKey = Env_Consts.JWT_SECRET;
 
   if (!secretKey) {
@@ -36,7 +41,7 @@ const generateAccessToken = (user: User): string => {
   try {
     const token = jwt.sign(
       {
-        id: user._id,
+        id: userId, // Use the converted string ID
       },
       secretKey,
       jwtOptions

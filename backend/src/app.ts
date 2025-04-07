@@ -21,7 +21,7 @@ app.get('/',(req,res) =>{
 app.use("/api/auth",authRouter);
 app.use("/api/album",albumRouter);
 
-//handling errors
+
 //handling errors
 app.use(notFound);
 app.use(errorHandler);
