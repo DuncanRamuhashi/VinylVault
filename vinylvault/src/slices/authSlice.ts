@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserInfo {
   email: string;
+  name?: string; 
   accessToken?: string;
   refreshToken?: string;
   [key: string]: any;
@@ -19,7 +20,7 @@ const getInitialUserInfo = (): UserInfo | null => {
     return JSON.parse(userData) as UserInfo;
   } catch (error) {
     console.error("Failed to parse user data from localStorage:", error);
-    localStorage.removeItem('user'); // Clean up invalid data
+    localStorage.removeItem('user');
     return null;
   }
 };
