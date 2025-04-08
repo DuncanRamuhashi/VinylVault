@@ -1,4 +1,4 @@
-import React from 'react';
+
 import background from './assets/pexels-didsss-2032719.jpg';
 import Mic from './cards/MicJ';
 

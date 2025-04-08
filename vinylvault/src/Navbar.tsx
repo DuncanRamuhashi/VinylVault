@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import logo from './assets/yy-removebg-preview.png';
-import { FaRegUser, FaUpload, FaHome } from 'react-icons/fa';
+import {  FaUpload, FaHome } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {

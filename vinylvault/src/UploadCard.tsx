@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import {useSelector } from 'react-redux';
 import { useCreateAlbumMutation } from './slices/albumsApiSlice';
-import { setCredentials } from './slices/authSlice';
+
 
 // Define interfaces for state and album data
 interface UserInfo {
@@ -27,7 +27,7 @@ const UploadCard: React.FC = () => {
   const [imageBase64, setImageBase64] = useState<string | null>(null); // Store Base64 string
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
 
   const { userInfo } = useSelector((state: AuthState) => state.auth);
 
