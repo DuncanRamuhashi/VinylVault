@@ -1,4 +1,3 @@
-// albumsApiSlice.ts
 import { apiSlice } from './apiSlice';
 
 interface CreateAlbumRequest {
@@ -18,10 +17,29 @@ interface AlbumResponse {
   updatedAt: string;
 }
 
+interface PaginationParams {
+  page: number;
+  limit: number;
+}
+
+interface PaginatedAlbumData {
+  albums: AlbumResponse[];
+  total: number;
+  page: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+interface PaginatedAlbumResponse {
+  success: boolean;
+  data: PaginatedAlbumData;
+}
+
 export const albumsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createAlbum: builder.mutation<AlbumResponse, { data: CreateAlbumRequest, accessToken: string }>({
-      query: ({ data, accessToken }) => ({
+    createAlbum: builder.mutation<AlbumResponse, CreateAlbumRequest & { accessToken: string }>({
+      query: ({ accessToken, ...data }) => ({
         url: `${import.meta.env.VITE_BACKENDURL}/api/album/create-album/${accessToken}`,
         method: 'POST',
         body: data,
@@ -30,7 +48,17 @@ export const albumsApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getUserAlbums: builder.query<PaginatedAlbumResponse, { user: string; pagination: PaginationParams; accessToken: string }>({
+      query: ({ user, pagination, accessToken }) => ({
+        url: `${import.meta.env.VITE_BACKENDURL}/api/album/get-albums/${accessToken}/${user}`,
+        method: 'GET',
+        params: {
+          page: pagination.page,
+          limit: pagination.limit,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useCreateAlbumMutation } = albumsApiSlice;
+export const { useCreateAlbumMutation, useGetUserAlbumsQuery } = albumsApiSlice;

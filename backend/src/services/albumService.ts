@@ -41,7 +41,7 @@ export const getUserAlbums = async (
   pagination: PaginationParams = { page: 1, limit: 2 }
 ): Promise<PaginatedAlbumResponse> => {
   const { page, limit } = pagination;
-  
+
   // Ensure page and limit are positive numbers
   const pageNum = Math.max(1, page);
   const limitNum = Math.max(1, Math.min(50, limit)); // Cap limit at 100
