@@ -7,30 +7,32 @@ import authRouter from './routes/authRoutes';
 import albumRouter from './routes/albumRoutes';
 import { errorHandler, notFound } from './middleware/errorHandler';
 import cors from 'cors';
-const app =  express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const app = express();
+
+app.use(express.json({ limit: '5mb' })); // Added limit here
+app.use(express.urlencoded({ extended: true, limit: '5mb' })); // Added limit here
 app.use(cookieParser());
 app.use(cors({
-    origin: Env_Consts.FRONTEND_URL, // or use '*' for all origins during dev
-    credentials: true // if you're using cookies
-  }));
-  
-// checking if the api is running 
-app.get('/',(req,res) =>{
+    origin: Env_Consts.FRONTEND_URL,
+    credentials: true
+}));
+
+// Health check endpoint
+app.get('/', (req, res) => {
     res.status(STATUS_CODES.OK).json("Welcome to the V-Api");
 });
 
-//
-app.use("/api/auth",authRouter);
-app.use("/api/album",albumRouter);
+// Routes
+app.use("/api/auth", authRouter);
+app.use("/api/album", albumRouter);
 
-
-//handling errors
+// Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
-app.listen(Env_Consts.PORT ,async () =>{
+
+// Start server
+app.listen(Env_Consts.PORT, async () => {
     console.log(`connected at PORT : ${Env_Consts.PORT}`);
     await connectToDB();
 });

@@ -7,8 +7,8 @@ import { createAlbumHandler,getAlbumsHandler } from "../controllers/albumControl
 
 const albumRouter = Router();
 
-albumRouter.post("create-album",protect,validate(albumSchemaZod),createAlbumHandler);
+albumRouter.post("/create-album/:accessToken",protect,validate(albumSchemaZod),createAlbumHandler);
 //user id
-albumRouter.get("get-albums/:user",protect,getAlbumsHandler);
+albumRouter.get("/get-albums/:accessToken/:user",protect,getAlbumsHandler);
 
 export default albumRouter;

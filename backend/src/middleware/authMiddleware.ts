@@ -11,8 +11,10 @@ interface AuthenticatedRequest extends Request {
 }
 
 const protect = asyncHandler(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const accessToken = req.cookies?.accessToken;
-  
+
+ 
+  const accessToken = req.params?.accessToken;
+  console.log(accessToken);
   if (!accessToken) {
     throw new HttpError("Not authorized, no token", STATUS_CODES.UNAUTHORIZED);
   }

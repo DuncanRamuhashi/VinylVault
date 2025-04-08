@@ -1,11 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCreateAlbumMutation } from './slices/albumsApiSlice';
+import { setCredentials } from './slices/authSlice';
+
+// Define interfaces for state and album data
+interface UserInfo {
+  email: string;
+  name?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  _id?: string;
+  [key: string]: any;
+}
+
+interface AuthState {
+  auth: {
+    userInfo: UserInfo | null;
+  };
+}
 
 const UploadCard: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
+  const [imageBase64, setImageBase64] = useState<string | null>(null); // Store Base64 string
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { userInfo } = useSelector((state: AuthState) => state.auth);
+
+  const [createAlbum, { isLoading }] = useCreateAlbumMutation();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/login');
+    }
+  }, [userInfo, navigate]);
+
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -16,17 +49,58 @@ const UploadCard: React.FC = () => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+      const file = e.target.files[0];
+      setImage(file);
+
+      // Convert image to Base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageBase64(reader.result as string); // Base64 string
+      };
+      reader.onerror = () => {
+        console.error('Error reading file');
+        alert('Failed to process image. Please try again.');
+      };
+      reader.readAsDataURL(file);
     }
   };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  console.log(userInfo);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Title:', title);
-    console.log('Name:', name);
-    console.log('Image:', image);
- 
-    navigate('/collections');
+  
+    if (!userInfo?._id) {
+      alert('Please log in to upload an album');
+      navigate('/login');
+      return;
+    }
+  
+    if (!imageBase64) {
+      alert('Please select an image to upload');
+      return;
+    }
+  
+    try {
+      const albumData: any = {
+        artistName: title,
+        albumName: name,
+        image: imageBase64,
+        user: userInfo._id,
+      };
+  
+      // Update the mutation call to include accessToken separately
+      const response = await createAlbum({ 
+        data: albumData,
+        accessToken: userInfo.accessToken || ''
+      }).unwrap();
+  
+      console.log('Album created:', response);
+      navigate('/collections');
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      const errorMessage = error?.data?.message || 'Failed to upload album. Please try again.';
+      // Could set an error state here instead of alert
+      alert(errorMessage);
+    }
   };
 
   return (
@@ -41,7 +115,7 @@ const UploadCard: React.FC = () => {
             htmlFor="title" 
             className="block text-sm font-medium text-gray-700 mb-2 transition-colors group-hover:text-red-800"
           >
-          Artist Name
+            Artist Name
           </label>
           <input
             type="text"
@@ -50,6 +124,7 @@ const UploadCard: React.FC = () => {
             onChange={handleTitleChange}
             placeholder="Enter a captivating title"
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 hover:border-red-300"
+            required
           />
         </div>
 
@@ -58,7 +133,7 @@ const UploadCard: React.FC = () => {
             htmlFor="name" 
             className="block text-sm font-medium text-gray-700 mb-2 transition-colors group-hover:text-red-800"
           >
-           Album Name
+            Album Name
           </label>
           <input
             type="text"
@@ -67,6 +142,7 @@ const UploadCard: React.FC = () => {
             onChange={handleNameChange}
             placeholder="Enter your full name"
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 hover:border-blue-300"
+            required
           />
         </div>
 
@@ -75,7 +151,7 @@ const UploadCard: React.FC = () => {
             htmlFor="image" 
             className="block text-sm font-medium text-gray-700 mb-2 transition-colors group-hover:text-red-800"
           >
-           Add Art
+            Add Art
           </label>
           <div className="relative">
             <input
@@ -98,9 +174,10 @@ const UploadCard: React.FC = () => {
 
         <button 
           type="submit"
-          className="w-full bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-900 transform transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          disabled={isLoading || !imageBase64}
+          className="w-full bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-900 transform transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
         >
-          Upload Your Card
+          {isLoading ? 'Uploading...' : 'Upload Your Card'}
         </button>
       </form>
     </div>
