@@ -14,7 +14,7 @@ app.use(express.json({ limit: '5mb' })); // Added limit here
 app.use(express.urlencoded({ extended: true, limit: '5mb' })); // Added limit here
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://vinyl-vault-psi.vercel.app',
+    origin: Env_Consts.FRONTEND_URL,
     credentials: true
 }));
 
