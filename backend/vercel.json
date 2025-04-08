@@ -3,25 +3,21 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/app.ts",
+      "src": "app.ts",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["src/**"]
+        "includeFiles": ["app.ts", "src/**", "tsconfig.json"]
       }
-    },
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/src/app.ts"
+      "dest": "/app.ts"
     },
     {
       "src": "/(.*)",
-      "dest": "/public/$1"
+      "dest": "/app.ts"
     }
   ]
 }
