@@ -14,10 +14,10 @@ app.use(express.json({ limit: '5mb' })); // Added limit here
 app.use(express.urlencoded({ extended: true, limit: '5mb' })); // Added limit here
 app.use(cookieParser());
 app.use(cors({
-    origin: Env_Consts.FRONTEND_URL,
+    origin: 'https://vinyl-vault-psi.vercel.app',
     credentials: true
 }));
-console.log( Env_Consts.FRONTEND_URL);
+
 // Health check endpoint
 app.get('/', (req, res) => {
     res.status(STATUS_CODES.OK).json("Welcome to the V-Api");
