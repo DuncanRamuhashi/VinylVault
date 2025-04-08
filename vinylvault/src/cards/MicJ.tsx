@@ -1,4 +1,4 @@
-import React from 'react'
+
 import mjWalk from '../assets/giphy-3--unscreen.gif'; // Michael Jackson
 const MicJ = () => {
   return (
