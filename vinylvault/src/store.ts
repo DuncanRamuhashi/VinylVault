@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { devtools } from 'globals'; // Ensure this import is correct
-
+import authReducer from './slices/authSlice';
+import { apiSlice } from './slices/apiSlice';
 const store = configureStore({
-  reducer: {}, // Add your reducers here
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(), 
+  reducer: {
+    auth: authReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
+  }, // Add your reducers here
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware), 
   devTools: true, // Make sure devTools are enabled for development
 });
 
