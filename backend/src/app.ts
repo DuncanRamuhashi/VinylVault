@@ -13,20 +13,7 @@ const app = express();
 app.use(express.json({ limit: '5mb' })); // Added limit here
 app.use(express.urlencoded({ extended: true, limit: '5mb' })); // Added limit here
 app.use(cookieParser());
-const allowedOrigins = [
-    'https://vinyl-vault-psi.vercel.app',
-  ];
-  
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true
-  }));
+
 // Health check endpoint
 app.get('/', (req, res) => {
     res.status(STATUS_CODES.OK).json("Welcome to the V-Api");
