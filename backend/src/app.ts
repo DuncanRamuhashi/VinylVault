@@ -17,7 +17,7 @@ app.use(cors({
     origin: Env_Consts.FRONTEND_URL,
     credentials: true
 }));
-
+console.log( Env_Consts.FRONTEND_URL);
 // Health check endpoint
 app.get('/', (req, res) => {
     res.status(STATUS_CODES.OK).json("Welcome to the V-Api");
