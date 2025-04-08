@@ -1,28 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserInfo {
-  id: string;
-  name: string;
   email: string;
-  token: string;
-  
+  accessToken?: string;
+  refreshToken?: string;
+  [key: string]: any;
 }
 
 interface AuthState {
   userInfo: UserInfo | null;
 }
 
-const getUserInfoFromStorage = (): UserInfo | null => {
+const getInitialUserInfo = (): UserInfo | null => {
+  const userData = localStorage.getItem('user');
+  if (!userData) return null;
+  
   try {
-    const stored = localStorage.getItem('userInfo');
-    return stored ? JSON.parse(stored) : null;
-  } catch {
+    return JSON.parse(userData) as UserInfo;
+  } catch (error) {
+    console.error("Failed to parse user data from localStorage:", error);
+    localStorage.removeItem('user'); // Clean up invalid data
     return null;
   }
 };
 
 const initialState: AuthState = {
-  userInfo: getUserInfoFromStorage()
+  userInfo: getInitialUserInfo(),
 };
 
 const authSlice = createSlice({
@@ -31,13 +34,13 @@ const authSlice = createSlice({
   reducers: {
     setCredentials: (state, action: PayloadAction<UserInfo>) => {
       state.userInfo = action.payload;
-      localStorage.setItem('userInfo', JSON.stringify(action.payload));
+      localStorage.setItem('user', JSON.stringify(action.payload));
     },
     logout: (state) => {
       state.userInfo = null;
-      localStorage.removeItem('userInfo');
-    }
-  }
+      localStorage.removeItem('user');
+    },
+  },
 });
 
 export const { setCredentials, logout } = authSlice.actions;

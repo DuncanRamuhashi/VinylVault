@@ -1,25 +1,22 @@
 import { apiSlice } from './apiSlice';
 
-const USERS_URL = `${import.meta.env.VITE_BACKEND_URI}/api/auth/login`;
-
-// Define types for the login request and response
-interface LoginRequest {
+interface LoginCredentials {
   email: string;
   password: string;
 }
 
 interface LoginResponse {
-  _id: string;
-  name: string;
+  accessToken: string;
+  refreshToken: string;
   email: string;
-  token: string;
+
 }
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, LoginRequest>({
+    login: builder.mutation<LoginResponse, LoginCredentials>({
       query: (data) => ({
-        url: USERS_URL,
+        url: `${import.meta.env.VITE_BACKENDURL}/api/auth/login`,
         method: 'POST',
         body: data,
       }),
