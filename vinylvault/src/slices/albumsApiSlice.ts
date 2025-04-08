@@ -38,7 +38,7 @@ interface PaginatedAlbumResponse {
 
 export const albumsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createAlbum: builder.mutation<AlbumResponse, CreateAlbumRequest & { accessToken: string }>({
+    createAlbum: builder.mutation<AlbumResponse, { data: CreateAlbumRequest, accessToken: string }>({
       query: ({ accessToken, ...data }) => ({
         url: `${import.meta.env.VITE_BACKENDURL}/api/album/create-album/${accessToken}`,
         method: 'POST',
