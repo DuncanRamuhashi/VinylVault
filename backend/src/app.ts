@@ -6,12 +6,17 @@ import connectToDB from './config/database';
 import authRouter from './routes/authRoutes';
 import albumRouter from './routes/albumRoutes';
 import { errorHandler, notFound } from './middleware/errorHandler';
+import cors from 'cors';
 const app =  express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(cors({
+    origin: Env_Consts.FRONTEND_URL, // or use '*' for all origins during dev
+    credentials: true // if you're using cookies
+  }));
+  
 // checking if the api is running 
 app.get('/',(req,res) =>{
     res.status(STATUS_CODES.OK).json("Welcome to the V-Api");

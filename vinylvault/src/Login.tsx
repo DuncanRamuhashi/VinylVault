@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import background from './assets/w.jpg';
 import { useNavigate } from 'react-router-dom';
+import { UseDispatch,useSelector } from 'react-redux';
+import { useLoginMutation } from './slices/usersApiSlice';
+import  {setCredentials} from './slices/authSlice';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const  navigate = useNavigate();
   
-  const handleSubmit = (e: any) => {
+  
+  
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    navigate('/collections');
 
-        localStorage.setItem("user","user");
-        location.reload();
-    console.log('Login attempted with:', { email, password });
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKENDURL}/api/auth/login`,{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+       }); 
+
+       console.log(response);
+       localStorage.setItem("user","user");
+       location.reload();
+       navigate('/collections');
+   console.log('Login attempted with:', { email, password });
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Network error occurred. Please try again later.");
+    }
+
+
+      
   };
 
   return (
