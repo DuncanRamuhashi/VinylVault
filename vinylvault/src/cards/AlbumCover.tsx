@@ -18,7 +18,7 @@ const AlbumCover: React.FC<AlbumCoverProps> = ({ albumSrc }) => {
       <img
         src={albumSrc}
         alt="Album Cover"
-        className="relative w-[260px] h-full object-cover shadow-lg  z-10 -left-4"
+        className="relative w-[260px] h-full object-contain shadow-lg  z-10 -left-4"
       />
     </div>
   );
