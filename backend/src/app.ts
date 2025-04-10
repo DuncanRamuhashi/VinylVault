@@ -10,36 +10,57 @@ import cors from 'cors';
 
 const app = express();
 
+// Middleware to parse JSON and URL-encoded bodies
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(cookieParser());
 
-const allowedOrigins = [Env_Consts.FRONTEND_URL, 'http://localhost:5173']; 
+// CORS configuration
+const allowedOrigins = [
+    Env_Consts.FRONTEND_URL, 
+    'http://localhost:5173', 
+    'https://vinyl-vault-psi.vercel.app' // Explicitly add your frontend URL
+];
+
 app.use(cors({
     origin: (origin, callback) => {
+        console.log('Request origin:', origin); // Debug log to check the origin
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true,
+    credentials: true, // Allow cookies or auth headers
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-
+// Root route
 app.get('/', (req, res) => {
     res.status(STATUS_CODES.OK).json("Welcome to the V-Api");
 });
 
+// Routes
 app.use("/api/auth", authRouter);
 app.use("/api/album", albumRouter);
 
+// Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(Env_Consts.PORT, async () => {
-    console.log(`connected at PORT : ${Env_Consts.PORT}`);
-    await connectToDB();
-});
+// Start server with database connection
+const startServer = async () => {
+    try {
+        await connectToDB(); // Connect to DB first
+        console.log('Database connected successfully');
+        app.listen(Env_Consts.PORT, () => {
+            console.log(`Connected at PORT: ${Env_Consts.PORT}`);
+        });
+    } catch (err) {
+        console.error('Failed to start server:', err);
+        process.exit(1); // Exit if DB connection fails
+    }
+};
+
+startServer();
