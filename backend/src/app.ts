@@ -17,14 +17,14 @@ app.use(cookieParser());
 
 // CORS configuration
 const allowedOrigins = [
-    Env_Consts.FRONTEND_URL || 'https://vinyl-vault-psi.vercel.app', // Fallback if env var is undefined
+    Env_Consts.FRONTEND_URL || 'https://vinyl-vault-psi.vercel.app',
     'http://localhost:5173',
     'https://vinyl-vault-psi.vercel.app',
 ];
 
 app.use(cors({
     origin: (origin, callback) => {
-        console.log('Incoming request origin:', origin); // Log for debugging
+        console.log('Incoming request origin:', origin);
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -37,17 +37,15 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// Test route to verify server is alive
+// Routes
 app.get('/health', (req, res) => {
     res.status(STATUS_CODES.OK).json({ message: 'Server is healthy', timestamp: new Date() });
 });
 
-// Root route
 app.get('/', (req, res) => {
     res.status(STATUS_CODES.OK).json('Welcome to the V-Api');
 });
 
-// Routes
 app.use('/api/auth', authRouter);
 app.use('/api/album', albumRouter);
 
@@ -55,21 +53,16 @@ app.use('/api/album', albumRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
+// Start server for Vercel
 const startServer = async () => {
     try {
-        console.log('Starting server...');
         await connectToDB();
         console.log('Database connected successfully');
-
-        const port = Env_Consts.PORT || 3000; // Fallback port
-        app.listen(port, () => {
-            console.log(`Server running on port: ${port}`);
-        });
     } catch (err) {
         console.error('Server startup failed:', err);
-        process.exit(1);
+        throw err;
     }
 };
 
-startServer();
+startServer().catch(err => console.error(err));
+export default app; // Export for Vercel
