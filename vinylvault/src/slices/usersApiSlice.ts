@@ -26,6 +26,9 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${import.meta.env.VITE_BACKENDURL}/api/auth/login`,
         method: 'POST',
         body: data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }),
     }),
     register: builder.mutation<AuthResponse, RegisterCredentials>({
@@ -33,6 +36,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${import.meta.env.VITE_BACKENDURL}/api/auth/register`, 
         method: 'POST',
         body: data,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      
       }),
     }),
   }),

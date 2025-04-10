@@ -56,6 +56,9 @@ export const albumsApiSlice = apiSlice.injectEndpoints({
           page: pagination.page,
           limit: pagination.limit,
         },
+        headers: {
+            'Content-Type': 'application/json',
+          },
       }),
     }),
   }),
