@@ -67,7 +67,7 @@ const MainPage: React.FC = () => {
     setCurrentPage(event.selected);
   };
 
-  console.log('API Response:', data); // Debug full response
+
 
   const albums = data?.data?.albums || [];
   const totalPages = data?.data?.totalPages || 1;

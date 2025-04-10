@@ -39,26 +39,20 @@ interface PaginatedAlbumResponse {
 export const albumsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createAlbum: builder.mutation<AlbumResponse, { data: CreateAlbumRequest, accessToken: string }>({
-      query: ({ accessToken, ...data }) => ({
-        url: `${import.meta.env.VITE_BACKENDURL}/api/album/create-album/${accessToken}`,
+      query: ({ data, accessToken }) => ({
+        url: `${import.meta.env.VITE_BACKENDURL}/api/album/create-album/${accessToken}`, // Token in URL
         method: 'POST',
-        body: data,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: data, // Sends { artistName, albumName, image, user } directly
       }),
     }),
     getUserAlbums: builder.query<PaginatedAlbumResponse, { user: string; pagination: PaginationParams; accessToken: string }>({
       query: ({ user, pagination, accessToken }) => ({
-        url: `${import.meta.env.VITE_BACKENDURL}/api/album/get-albums/${accessToken}/${user}`,
+        url: `${import.meta.env.VITE_BACKENDURL}/api/album/get-albums/${accessToken}/${user}`, // Token in URL
         method: 'GET',
         params: {
           page: pagination.page,
           limit: pagination.limit,
         },
-        headers: {
-            'Content-Type': 'application/json',
-          },
       }),
     }),
   }),

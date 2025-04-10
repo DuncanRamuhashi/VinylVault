@@ -86,7 +86,7 @@ const UploadCard: React.FC = () => {
         image: imageBase64,
         user: userInfo._id,
       };
-  
+     console.log('input',albumData);
       // Update the mutation call to include accessToken separately
       const response = await createAlbum({ 
         data: albumData,

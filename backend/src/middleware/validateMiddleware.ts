@@ -11,7 +11,7 @@ import { ZodSchema } from "zod";
  */
 const validate = (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body);
-
+  
     if (!result.success) {
         const errors = result.error.errors.map((e) => e.message).join(", ");
         return next(new HttpError(`Validation Failed: ${errors}`, STATUS_CODES.BAD_REQUEST));
