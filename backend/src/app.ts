@@ -1,5 +1,5 @@
 import express from 'express';
-import cookieParser from "cookie-parser";
+import cookieParser from 'cookie-parser';
 import { Env_Consts } from './constants/envConsts';
 import { STATUS_CODES } from './constants/httpCodes';
 import connectToDB from './config/database';
@@ -10,56 +10,65 @@ import cors from 'cors';
 
 const app = express();
 
-// Middleware to parse JSON and URL-encoded bodies
+// Middleware
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(cookieParser());
 
 // CORS configuration
 const allowedOrigins = [
-    Env_Consts.FRONTEND_URL, 
-    'http://localhost:5173', 
-    'https://vinyl-vault-psi.vercel.app' // Explicitly add your frontend URL
+    Env_Consts.FRONTEND_URL || 'https://vinyl-vault-psi.vercel.app', // Fallback if env var is undefined
+    'http://localhost:5173',
+    'https://vinyl-vault-psi.vercel.app',
 ];
 
 app.use(cors({
     origin: (origin, callback) => {
-        console.log('Request origin:', origin); // Debug log to check the origin
+        console.log('Incoming request origin:', origin); // Log for debugging
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
+            console.log('Blocked by CORS:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true, // Allow cookies or auth headers
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+// Test route to verify server is alive
+app.get('/health', (req, res) => {
+    res.status(STATUS_CODES.OK).json({ message: 'Server is healthy', timestamp: new Date() });
+});
 
 // Root route
 app.get('/', (req, res) => {
-    res.status(STATUS_CODES.OK).json("Welcome to the V-Api");
+    res.status(STATUS_CODES.OK).json('Welcome to the V-Api');
 });
 
 // Routes
-app.use("/api/auth", authRouter);
-app.use("/api/album", albumRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/album', albumRouter);
 
-// Error handling middleware
+// Error handling
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server with database connection
+// Start server
 const startServer = async () => {
     try {
-        await connectToDB(); // Connect to DB first
+        console.log('Starting server...');
+        await connectToDB();
         console.log('Database connected successfully');
-        app.listen(Env_Consts.PORT, () => {
-            console.log(`Connected at PORT: ${Env_Consts.PORT}`);
+
+        const port = Env_Consts.PORT || 3000; // Fallback port
+        app.listen(port, () => {
+            console.log(`Server running on port: ${port}`);
         });
     } catch (err) {
-        console.error('Failed to start server:', err);
-        process.exit(1); // Exit if DB connection fails
+        console.error('Server startup failed:', err);
+        process.exit(1);
     }
 };
 
