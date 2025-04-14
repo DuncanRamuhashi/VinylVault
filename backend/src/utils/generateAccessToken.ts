@@ -30,7 +30,7 @@ const generateAccessToken = (user: User): string => {
   userId = _id;
 
   const jwtOptions: jwt.SignOptions = {
-    expiresIn: "15m", // Short-lived access token
+    expiresIn: "30m", // Short-lived access token
     issuer: "duncan.com",
     audience: "API V1",
   };
