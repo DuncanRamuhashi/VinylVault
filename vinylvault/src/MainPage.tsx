@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import AlbumCover from './cards/AlbumCover';
 import { useGetUserAlbumsQuery } from './slices/albumsApiSlice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-
+import { ClipLoader } from 'react-spinners';
 // Define interfaces
 interface Album {
   _id: string;
@@ -36,7 +36,7 @@ interface ApiErrorResponse {
 const MainPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const albumsPerPage = 2; // Match backend default limit
-
+  const [pageLoading,setPageLoad] =  useState(true); 
   const navigate = useNavigate();
   const { userInfo } = useSelector((state: AuthState) => state.auth);
 
@@ -47,22 +47,31 @@ const MainPage: React.FC = () => {
     }
   }, [userInfo, navigate]);
 
-  // Fetch albums using RTK Query
   const { 
     data, 
     error, 
     isLoading 
-  } = useGetUserAlbumsQuery({
-    user: userInfo?._id || '', // Fixed parameter name from 'user' to 'userId'
-    pagination: {
-      page: currentPage + 1, // ReactPaginate is 0-based, backend is 1-based
-      limit: albumsPerPage,
-    },
-    accessToken: userInfo?.accessToken || '',
-  }, {
-    skip: !userInfo?._id || !userInfo?.accessToken, // Skip if no user ID or token
-  });
-
+  } = useGetUserAlbumsQuery(
+    {
+      user: userInfo?._id || '', 
+      pagination: {
+        page: currentPage + 1, 
+        limit: albumsPerPage,
+      },
+      accessToken: userInfo?.accessToken || '',
+    }, 
+    {
+      skip: !userInfo?._id || !userInfo?.accessToken,
+    }
+  );
+  
+  // Then call setPageLoad(false) in a useEffect, once data has been fetched
+  useEffect(() => {
+    if (!isLoading && data) {
+      setPageLoad(false);
+    }
+  }, [isLoading, data]);
+  
   const handlePageClick = (event: { selected: number }) => {
     setCurrentPage(event.selected);
   };
@@ -71,7 +80,13 @@ const MainPage: React.FC = () => {
 
   const albums = data?.data?.albums || [];
   const totalPages = data?.data?.totalPages || 1;
-
+  if (pageLoading) {   //loading thinggg
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-100">
+        <ClipLoader size={50} color="#F87171" />
+      </div>
+    );
+  };
   return (
     <div className="flex flex-col items-center min-h-screen px-6 py-16">
       {/* Title Section */}
